@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20240924171015_manufacturerNameUnique")]
+    partial class manufacturerNameUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +66,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("MakeYear")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ManufacturerId")
+                    b.Property<int>("ManufacturerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Model")
@@ -118,25 +121,19 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.Vehicle", b =>
                 {
                     b.HasOne("Core.Entities.Manufacturer", "Manufacturer")
-                        .WithMany("Vehicles")
+                        .WithMany()
                         .HasForeignKey("ManufacturerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Manufacturer");
                 });
 
             modelBuilder.Entity("Core.Entities.VehicleImage", b =>
                 {
-                    b.HasOne("Core.Entities.Vehicle", "Vehicle")
+                    b.HasOne("Core.Entities.Vehicle", null)
                         .WithMany("VehicleImages")
                         .HasForeignKey("VehicleId");
-
-                    b.Navigation("Vehicle");
-                });
-
-            modelBuilder.Entity("Core.Entities.Manufacturer", b =>
-                {
-                    b.Navigation("Vehicles");
                 });
 
             modelBuilder.Entity("Core.Entities.Vehicle", b =>

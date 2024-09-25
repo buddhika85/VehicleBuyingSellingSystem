@@ -9,6 +9,10 @@ namespace Infrastructure.Config
         public void Configure(EntityTypeBuilder<Manufacturer> builder)
         {
             builder.Property(x => x.Name).HasMaxLength(100);
+            
+            // Creating a unique index on the 'Name' property
+            builder.HasIndex(m => m.Name).IsUnique();
+
             builder.Property(x => x.Originated).HasMaxLength(100);
         }
     }

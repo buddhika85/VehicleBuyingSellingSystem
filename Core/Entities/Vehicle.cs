@@ -4,9 +4,11 @@ using Core.Enums;
 namespace Core.Entities
 {
     public class Vehicle : BaseEntity
-    {       
-        public int ManufacturerId { get; set; }
-        public required Manufacturer Manufacturer { get; set;}        
+    {   
+        // FK    
+        public int? ManufacturerId { get; set; }
+        public Manufacturer? Manufacturer { get; set;}        
+
 
         [Range(1900, 2024)]
         public int MakeYear { get; set; }
@@ -17,6 +19,8 @@ namespace Core.Entities
         public StateLocated StateLocated { get; set; }
         public int Views { get; set; }
         public string? Description { get; set; }
+
+        
         public required IEnumerable<VehicleImage> VehicleImages { get; set; }
     }
 }
