@@ -1,4 +1,4 @@
-
+use VehicleMgmt;
 
 --INSERT INTO [dbo].[Manufacturers] VALUES ('Toyota', 'Japan');
 --INSERT INTO [dbo].[Manufacturers] VALUES ('Ford', 'USA');
