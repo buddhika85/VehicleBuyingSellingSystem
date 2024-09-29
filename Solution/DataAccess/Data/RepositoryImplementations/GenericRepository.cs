@@ -1,18 +1,25 @@
 ﻿using DataAccess.Data.RepositoryInterfaces;
 using DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Data.RepositoryImplementations
+namespace DataAccess.Data.RepositoryImplementations;
+
+public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
-    {
-        Task<IReadOnlyList<T>> IGenericRepository<T>.GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+    private readonly AppDbContext _context;
 
-        Task<T> IGenericRepository<T>.GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+    public GenericRepository(AppDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<IReadOnlyList<T>> GetAllAsync()
+    {
+        return await _context.Set<T>().ToListAsync();
+    }
+
+    public async Task<T?> GetByIdAsync(int id)
+    {
+        return await _context.Set<T>().FindAsync(id);
     }
 }
