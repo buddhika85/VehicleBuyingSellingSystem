@@ -1,8 +1,20 @@
-﻿namespace DataAccess.Data.Specifications;
+﻿using System.Linq.Expressions;
 
-//internal class BaseSpecifications<T> : ISpecifications<T>
-//{
-//    public Expression<Func<T, bool>> Criteria => throw new NotImplementedException();
+namespace DataAccess.Data.Specifications;
 
-//    public List<Expression<Func<T, object>>> Includes => throw new NotImplementedException();
-//}
+public class BaseSpecifications<T> : ISpecification<T>
+{
+    public BaseSpecifications(Expression<Func<T, bool>> criteria)
+    {
+        Criteria = criteria;
+    }
+
+    public Expression<Func<T, bool>> Criteria { get; } = null!;
+
+    public List<Expression<Func<T, object>>> Includes { get; }  = new List<Expression<Func<T, object>>>();
+
+    protected void AddInclude(Expression<Func<T, object>> expressionToInclude)
+    {
+        Includes.Add(expressionToInclude);
+    }
+}
