@@ -1,6 +1,8 @@
 ﻿using DataAccess.BusinessLogic.Services.Interfaces;
 using DataAccess.Data.RepositoryInterfaces;
+using DataAccess.Data.Specifications;
 using DataAccess.Entities;
+using DTOs.Vehicles;
 
 namespace DataAccess.BusinessLogic.Services.Implementations;
 
@@ -12,13 +14,25 @@ public class VehicleService : IVehiclesService
     {
         _repository = repository;
     }
+
+    // Get all with includes
     public async Task<IReadOnlyList<Vehicle>> GetAll()
     {
-        return await _repository.GetAllAsync();
+        var spec = new VehiclesWithManufacturerSpecification();       
+        return await _repository.ListAsync(spec);
     }
 
-    public async Task<Vehicle?> GetById(int id)
+    // Get by Id, with includes
+    public async Task<VehicleToReadDto?> GetById(int id)
     {
-        return await _repository.GetByIdAsync(id);
+        var spec = new VehiclesWithManufacturerSpecification(id);
+        var vehicleModel = await _repository.GetEntityWithSpec(spec);
+        if (vehicleModel == null)
+        {
+            return null;
+        }
+
+        // use auto mapper
+        return null;
     }
 }

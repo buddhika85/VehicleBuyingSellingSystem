@@ -1,13 +1,12 @@
-using System.ComponentModel.DataAnnotations;
 using DataAccess.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.Entities;
 
 public class Vehicle : BaseEntity
 {
-    // FK    
-    public int? ManufacturerId { get; set; }
-    public Manufacturer? Manufacturer { get; set; }
+    public int ManufacturerId { get; set; }
+    public Manufacturer Manufacturer { get; set; } = null!;
 
 
     [Range(1900, 2024)]

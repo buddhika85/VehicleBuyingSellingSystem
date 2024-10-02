@@ -24,7 +24,12 @@ public class VehiclesController(IVehiclesService vehiclesService) : ControllerBa
     [HttpGet("{id}")]
     public async Task<ActionResult<Vehicle>> Get(int id)
     {
-        return Ok(await _vehiclesService.GetById(id));
+        var item = await _vehiclesService.GetById(id);
+        if (item == null)
+        {
+            return Ok($"Vehicle with such Id: {id} not found");
+        }
+        return Ok(item);
     }
 
     // POST api/Vehicles
