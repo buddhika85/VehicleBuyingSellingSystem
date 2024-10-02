@@ -2,7 +2,6 @@
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace API.Controllers;
 
 

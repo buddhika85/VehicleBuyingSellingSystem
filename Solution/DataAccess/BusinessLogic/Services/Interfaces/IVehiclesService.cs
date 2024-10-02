@@ -5,6 +5,6 @@ namespace DataAccess.BusinessLogic.Services.Interfaces;
 
 public interface IVehiclesService
 {
-    public Task<IReadOnlyList<Vehicle>> GetAll();
+    public Task<IReadOnlyList<VehicleToReadDto>> GetAll();
     public Task<VehicleToReadDto?> GetById(int id);
 }

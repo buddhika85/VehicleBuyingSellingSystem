@@ -1,4 +1,5 @@
-﻿using DataAccess.BusinessLogic.Services.Interfaces;
+﻿using AutoMapper;
+using DataAccess.BusinessLogic.Services.Interfaces;
 using DataAccess.Data.RepositoryInterfaces;
 using DataAccess.Data.Specifications;
 using DataAccess.Entities;
@@ -6,20 +7,19 @@ using DTOs.Vehicles;
 
 namespace DataAccess.BusinessLogic.Services.Implementations;
 
-public class VehicleService : IVehiclesService
+public class VehicleService(IGenericRepository<Vehicle> repository, IMapper autoMapper) : IVehiclesService
 {
-    private readonly IGenericRepository<Vehicle> _repository;
-
-    public VehicleService(IGenericRepository<Vehicle> repository)
-    {
-        _repository = repository;
-    }
+    private readonly IGenericRepository<Vehicle> _repository = repository;
+    private readonly IMapper _autoMapper = autoMapper;
 
     // Get all with includes
-    public async Task<IReadOnlyList<Vehicle>> GetAll()
+    public async Task<IReadOnlyList<VehicleToReadDto>> GetAll()
     {
-        var spec = new VehiclesWithManufacturerSpecification();       
-        return await _repository.ListAsync(spec);
+        var spec = new VehiclesWithManufacturerSpecification();
+        var vehicleModels = await _repository.ListAsync(spec);
+
+        // use auto mapper
+        return _autoMapper.Map<IReadOnlyList<Vehicle>, IReadOnlyList<VehicleToReadDto>>(vehicleModels);
     }
 
     // Get by Id, with includes
@@ -33,6 +33,6 @@ public class VehicleService : IVehiclesService
         }
 
         // use auto mapper
-        return null;
+        return _autoMapper.Map < Vehicle,  VehicleToReadDto>(vehicleModel);
     }
 }
