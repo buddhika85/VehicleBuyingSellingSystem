@@ -12,4 +12,19 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec);
 
 
+    // create
+    Task Create(T entity);
+
+    // delete
+    void Delete(T entity);
+    void Delete(int id);
+
+    // update
+    // Get by Id
+    // Do the object mappings to entity
+    // call SaveChangedAsync()
+    //void Update(T entity);
+
+    // Save / Commit / Update
+    Task SaveChangedAsync();
 }
