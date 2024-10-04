@@ -3,6 +3,7 @@ using DataAccess.BusinessLogic.Services.Interfaces;
 using DataAccess.Data.RepositoryInterfaces;
 using DataAccess.Data.Specifications;
 using DataAccess.Entities;
+using DTOs;
 using DTOs.Vehicles;
 
 namespace DataAccess.BusinessLogic.Services.Implementations;
@@ -11,6 +12,22 @@ public class VehicleService(IGenericRepository<Vehicle> repository, IMapper auto
 {
     private readonly IGenericRepository<Vehicle> _repository = repository;
     private readonly IMapper _autoMapper = autoMapper;
+
+    public async Task<ResultDto> Create(VehicleToCreateDto dto)
+    {
+        var resultDto = new ResultDto { FunctionPerformed = "Adding new vehicle" };
+        try
+        {
+            var model = _autoMapper.Map<Vehicle>(dto);
+            await _repository.Create(model);
+            return resultDto;
+        }
+        catch (Exception ex)
+        {
+            resultDto.ErrorMessage = $"Error - {ex.Message}";
+            return resultDto;
+        }
+    }
 
     // Get all with includes
     public async Task<IReadOnlyList<VehicleToReadDto>> GetAll()

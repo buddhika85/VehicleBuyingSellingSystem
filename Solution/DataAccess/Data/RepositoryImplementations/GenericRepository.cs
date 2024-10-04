@@ -14,7 +14,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         _context = context;
     }
 
-
     // Get
     public async Task<IReadOnlyList<T>> GetAllAsync()
     {
@@ -46,6 +45,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         await SaveChangedAsync();
     }
 
+    public async void Update(T entity)
+    {
+        _context.Entry(entity).State = EntityState.Modified;
+        await SaveChangedAsync();
+    }
+
     public void Delete(T entity)
     {
         if (entity == null)
@@ -65,11 +70,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
         Delete(entity);
     }
-
-    //public void Update(T entity)
-    //{
-    //    throw new NotImplementedException();
-    //}
 
     public async Task SaveChangedAsync()
     {

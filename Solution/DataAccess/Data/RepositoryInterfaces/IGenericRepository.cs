@@ -23,7 +23,7 @@ public interface IGenericRepository<T> where T : BaseEntity
     // Get by Id
     // Do the object mappings to entity
     // call SaveChangedAsync()
-    //void Update(T entity);
+    void Update(T entity);
 
     // Save / Commit / Update
     Task SaveChangedAsync();
