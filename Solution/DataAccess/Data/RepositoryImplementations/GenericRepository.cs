@@ -47,6 +47,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async void Update(T entity)
     {
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+
+        if (await GetByIdAsync(entity.Id) == null)
+        {
+            throw new ArgumentNullException($"{nameof(entity)} with id {entity.Id} is unavailable for update");
+        }
         _context.Entry(entity).State = EntityState.Modified;
         await SaveChangedAsync();
     }

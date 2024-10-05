@@ -1,5 +1,6 @@
 ﻿using DataAccess.BusinessLogic.Services.Interfaces;
 using DataAccess.Entities;
+using DTOs.Vehicles;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -15,7 +16,7 @@ public class VehiclesController(IVehiclesService vehiclesService) : ControllerBa
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<Vehicle>>> Get()
     {
-        var items = await _vehiclesService.GetAll();
+        var items = await _vehiclesService.GetAllAsync();
         return Ok(items);
     }
 
@@ -23,7 +24,7 @@ public class VehiclesController(IVehiclesService vehiclesService) : ControllerBa
     [HttpGet("{id}")]
     public async Task<ActionResult<Vehicle>> Get(int id)
     {
-        var item = await _vehiclesService.GetById(id);
+        var item = await _vehiclesService.GetByIdAsync(id);
         if (item == null)
         {
             return Ok($"Vehicle with such Id: {id} not found");
@@ -33,8 +34,14 @@ public class VehiclesController(IVehiclesService vehiclesService) : ControllerBa
 
     // POST api/Vehicles
     [HttpPost]
-    public void Post([FromBody] string value)
+    public async Task<ActionResult> Post(VehicleToCreateDto vehicleToCreateDto)
     {
+        var result = await _vehiclesService.CreateAsync(vehicleToCreateDto);
+        if (result.IsSuccess)
+        {
+            return Created();
+        }
+        return BadRequest(result);
     }
 
     // PUT api/Vehicles/5
