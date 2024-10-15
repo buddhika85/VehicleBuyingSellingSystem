@@ -46,7 +46,7 @@ public class VehicleService(IGenericRepository<Vehicle> repository, IMapper auto
         try
         {
             var model = _autoMapper.Map<Vehicle>(dto);
-            await _repository.Create(model);
+            await _repository.CreateAsync(model);
             return resultDto;
         }
         catch (Exception ex)
@@ -71,7 +71,7 @@ public class VehicleService(IGenericRepository<Vehicle> repository, IMapper auto
             
             _autoMapper.Map(vehicle, dto);
 
-            await _repository.Update(vehicle);
+            await _repository.UpdateAsync(vehicle);
             return resultDto;
         }
         catch (Exception ex)
@@ -82,4 +82,25 @@ public class VehicleService(IGenericRepository<Vehicle> repository, IMapper auto
     }
 
     // Delete
+    public async Task<ResultDto> DeleteAsync(int id)
+    {
+        var resultDto = new ResultDto { FunctionPerformed = $"Deleting an existing vehicle with Id {id}" };
+        try
+        {
+            var vehicle = await _repository.GetByIdAsync(id);
+            if (vehicle == null)
+            {
+                resultDto.ErrorMessage = $"Vehicle with ID {id} not found for deleting";
+                return resultDto;
+            }
+
+            await _repository.DeleteAsync(vehicle);
+            return resultDto;
+        }
+        catch (Exception ex)
+        {
+            resultDto.ErrorMessage = $"Error - {ex.Message}";
+            return resultDto;
+        }
+    }
 }

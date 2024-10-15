@@ -35,7 +35,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await ApplySpecification(spec).ToListAsync();
     }
         
-    public async Task Create(T entity)
+    public async Task CreateAsync(T entity)
     {
         if (entity == null)
         {
@@ -45,7 +45,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         await SaveChangedAsync();
     }
 
-    public async Task Update(T entity)
+    public async Task UpdateAsync(T entity)
     {
         if (entity == null)
         {
@@ -60,7 +60,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         await SaveChangedAsync();
     }
 
-    public async Task Delete(T entity)
+    public async Task DeleteAsync(T entity)
     {
         if (entity == null)
         {
@@ -71,14 +71,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         await SaveChangedAsync();
     }
 
-    public async Task Delete(int id)
+    public async Task DeleteAsync(int id)
     {
         var entity = await GetByIdAsync(id);
         if (entity == null)
         {
             throw new  ArgumentOutOfRangeException();
         }
-        Delete(entity);
+        await DeleteAsync(entity);
     }
 
     public async Task SaveChangedAsync()
