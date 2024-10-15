@@ -45,7 +45,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         await SaveChangedAsync();
     }
 
-    public async void Update(T entity)
+    public async Task Update(T entity)
     {
         if (entity == null)
         {
@@ -60,7 +60,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         await SaveChangedAsync();
     }
 
-    public void Delete(T entity)
+    public async Task Delete(T entity)
     {
         if (entity == null)
         {
@@ -68,9 +68,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
 
         _context.Set<T>().Remove(entity);
+        await SaveChangedAsync();
     }
 
-    public async void Delete(int id)
+    public async Task Delete(int id)
     {
         var entity = await GetByIdAsync(id);
         if (entity == null)

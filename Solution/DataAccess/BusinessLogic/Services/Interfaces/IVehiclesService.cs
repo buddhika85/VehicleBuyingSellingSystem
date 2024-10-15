@@ -9,4 +9,7 @@ public interface IVehiclesService
     public Task<VehicleToReadDto?> GetByIdAsync(int id);
 
     public Task<ResultDto> CreateAsync(VehicleToCreateDto dto);
+
+
+
 }

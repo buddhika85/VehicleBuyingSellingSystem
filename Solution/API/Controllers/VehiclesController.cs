@@ -27,7 +27,7 @@ public class VehiclesController(IVehiclesService vehiclesService) : ControllerBa
         var item = await _vehiclesService.GetByIdAsync(id);
         if (item == null)
         {
-            return Ok($"Vehicle with such Id: {id} not found");
+            return NotFound($"Vehicle with such Id: {id} not found");
         }
         return Ok(item);
     }

@@ -16,14 +16,14 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task Create(T entity);
 
     // delete
-    void Delete(T entity);
-    void Delete(int id);
+    Task Delete(T entity);
+    Task Delete(int id);
 
     // update
     // Get by Id
     // Do the object mappings to entity
     // call SaveChangedAsync()
-    void Update(T entity);
+    Task Update(T entity);
 
     // Save / Commit / Update
     Task SaveChangedAsync();

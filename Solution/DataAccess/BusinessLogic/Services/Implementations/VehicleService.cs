@@ -13,7 +13,34 @@ public class VehicleService(IGenericRepository<Vehicle> repository, IMapper auto
     private readonly IGenericRepository<Vehicle> _repository = repository;
     private readonly IMapper _autoMapper = autoMapper;
 
-    public async Task<ResultDto> Create(VehicleToCreateDto dto)
+
+    // Get all with includes
+    public async Task<IReadOnlyList<VehicleToReadDto>> GetAllAsync()
+    {
+        var spec = new VehiclesWithManufacturerSpecification();
+        var vehicleModels = await _repository.ListAsync(spec);
+
+        // use auto mapper
+        return _autoMapper.Map<IReadOnlyList<Vehicle>, IReadOnlyList<VehicleToReadDto>>(vehicleModels);
+    }
+
+
+    // Get by Id, with includes
+    public async Task<VehicleToReadDto?> GetByIdAsync(int id)
+    {
+        var spec = new VehiclesWithManufacturerSpecification(id);
+        var vehicleModel = await _repository.GetEntityWithSpec(spec);
+        if (vehicleModel == null)
+        {
+            return null;
+        }
+
+        // use auto mapper
+        return _autoMapper.Map<Vehicle, VehicleToReadDto>(vehicleModel);
+    }
+
+    // Insert
+    public async Task<ResultDto> CreateAsync(VehicleToCreateDto dto)
     {
         var resultDto = new ResultDto { FunctionPerformed = "Adding new vehicle" };
         try
@@ -29,27 +56,30 @@ public class VehicleService(IGenericRepository<Vehicle> repository, IMapper auto
         }
     }
 
-    // Get all with includes
-    public async Task<IReadOnlyList<VehicleToReadDto>> GetAll()
+    // Update
+    public async Task<ResultDto> UpdateAsync(VehicleToUpdateDto dto)
     {
-        var spec = new VehiclesWithManufacturerSpecification();
-        var vehicleModels = await _repository.ListAsync(spec);
-
-        // use auto mapper
-        return _autoMapper.Map<IReadOnlyList<Vehicle>, IReadOnlyList<VehicleToReadDto>>(vehicleModels);
-    }
-
-    // Get by Id, with includes
-    public async Task<VehicleToReadDto?> GetById(int id)
-    {
-        var spec = new VehiclesWithManufacturerSpecification(id);
-        var vehicleModel = await _repository.GetEntityWithSpec(spec);
-        if (vehicleModel == null)
+        var resultDto = new ResultDto { FunctionPerformed = $"Updating an existing vehicle with Id {dto.Id}" };
+        try
         {
-            return null;
-        }
+            var vehicle = await _repository.GetByIdAsync(dto.Id);
+            if (vehicle == null)
+            {
+                resultDto.ErrorMessage = $"Vehicle with ID {dto.Id} not found for updating";
+                return resultDto;
+            }
+            
+            _autoMapper.Map(vehicle, dto);
 
-        // use auto mapper
-        return _autoMapper.Map < Vehicle,  VehicleToReadDto>(vehicleModel);
+            await _repository.Update(vehicle);
+            return resultDto;
+        }
+        catch (Exception ex)
+        {
+            resultDto.ErrorMessage = $"Error - {ex.Message}";
+            return resultDto;
+        }
     }
+
+    // Delete
 }
