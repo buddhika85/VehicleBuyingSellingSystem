@@ -1,0 +1,14 @@
+{
+  "VehiclePost_Example": {
+    "manufacturerId": 1,
+    "makeYear": 2010,
+    "model": "Corrolla",
+    "price": 10000,
+    "type": 1,
+    "vehicleCondition": 3,
+    "stateLocated": 0,
+    "description": "Toyota Corrolla",
+    "vehicleImages": [
+    ]
+  }
+}

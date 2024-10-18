@@ -35,7 +35,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await ApplySpecification(spec).ToListAsync();
     }
         
-    public async Task CreateAsync(T entity)
+    public async Task<T> CreateAsync(T entity)
     {
         if (entity == null)
         {
@@ -43,6 +43,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
         await _context.Set<T>().AddAsync(entity);
         await SaveChangedAsync();
+        return entity;                                  // return entity with Id to follow Rest conventions
     }
 
     public async Task UpdateAsync(T entity)

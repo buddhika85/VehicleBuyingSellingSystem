@@ -40,13 +40,14 @@ public class VehicleService(IGenericRepository<Vehicle> repository, IMapper auto
     }
 
     // Insert
-    public async Task<ResultDto> CreateAsync(VehicleToCreateDto dto)
+    public async Task<CreatedResultDto> CreateAsync(VehicleToCreateDto dto)
     {
-        var resultDto = new ResultDto { FunctionPerformed = "Adding new vehicle" };
+        var resultDto = new CreatedResultDto { FunctionPerformed = "Adding new vehicle" };
         try
         {
             var model = _autoMapper.Map<Vehicle>(dto);
-            await _repository.CreateAsync(model);
+            model = await _repository.CreateAsync(model);
+            resultDto.CreatedEntityId = model.Id;               // for REST convetions
             return resultDto;
         }
         catch (Exception ex)

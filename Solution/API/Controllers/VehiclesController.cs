@@ -39,20 +39,60 @@ public class VehiclesController(IVehiclesService vehiclesService) : ControllerBa
         var result = await _vehiclesService.CreateAsync(vehicleToCreateDto);
         if (result.IsSuccess)
         {
-            return Created();
+            // REST convention - Return 201 Created with URI to the new resource
+            return CreatedAtAction(nameof(Get), new { id = result.CreatedEntityId }, vehicleToCreateDto);           
         }
         return BadRequest(result);
     }
 
     // PUT api/Vehicles/5
+    // Full update on a resource / replace
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    public async Task<ActionResult> Put(int id, VehicleToUpdateDto vehicleToUpdate)
     {
+        if (vehicleToUpdate == null || vehicleToUpdate.Id != id)
+        {
+            return UnprocessableEntity("The provided Id does not match the resource Id.");
+        }
+
+        var result = await _vehiclesService.UpdateAsync(vehicleToUpdate);
+        if (result.IsSuccess)
+        {
+            // REST conventions
+            return NoContent();  // Return 204 No Content on successful update 
+        }
+        return BadRequest(result);
+    }
+
+    // Patch api/Vehicles
+    // Partial update on a resource
+    [HttpPatch("{id}")]
+    public async Task<ActionResult> Patch(int id, VehicleToUpdateDto vehicleToUpdate)
+    {
+        // Fetch the existing vehicle from the database
+        var vehicleFromDb = await _vehiclesService.GetByIdAsync(id);
+        if (vehicleFromDb == null)
+        {
+            return NotFound($"Vehicle with Id {id} not found.");
+        }
+
+        var result = await _vehiclesService.UpdateAsync(vehicleToUpdate);
+        if (result.IsSuccess)
+        {
+            return NoContent();     // Return 204 No Content on successful update 
+        }
+        return BadRequest(result);
     }
 
     // DELETE api/Vehicles/5
     [HttpDelete("{id}")]
-    public void Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
+        var result = await _vehiclesService.DeleteAsync(id);
+        if (result.IsSuccess)
+        {
+            return NoContent();     // Return 204 No Content on successful deletion 
+        }
+        return BadRequest(result);
     }
 }

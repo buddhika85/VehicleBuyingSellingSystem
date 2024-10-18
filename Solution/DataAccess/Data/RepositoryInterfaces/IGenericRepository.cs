@@ -13,7 +13,7 @@ public interface IGenericRepository<T> where T : BaseEntity
 
 
     // create
-    Task CreateAsync(T entity);
+    Task<T> CreateAsync(T entity);
 
     // delete
     Task DeleteAsync(T entity);
