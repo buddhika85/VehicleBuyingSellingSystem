@@ -70,7 +70,7 @@ public class VehicleService(IGenericRepository<Vehicle> repository, IMapper auto
                 return resultDto;
             }
             
-            _autoMapper.Map(vehicle, dto);
+            _autoMapper.Map(dto, vehicle);
 
             await _repository.UpdateAsync(vehicle);
             return resultDto;

@@ -10,5 +10,18 @@
     "description": "Toyota Corrolla",
     "vehicleImages": [
     ]
+  },
+
+  "VehiclePut_Update_Example ": {
+    "id": 4,
+    "manufacturerId": null,
+    "makeYear": null,
+    "model": "Corolla",
+    "price": 12345.99,
+    "type": null,
+    "vehicleCondition": null,
+    "stateLocated": null,
+    "description": "model updated",
+    "vehicleImages": []
   }
 }

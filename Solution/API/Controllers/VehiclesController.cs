@@ -14,7 +14,7 @@ public class VehiclesController(IVehiclesService vehiclesService) : ControllerBa
 
     // GET: api/Vehicles
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<Vehicle>>> Get()
+    public async Task<ActionResult<IReadOnlyList<VehicleToReadDto>>> Get()
     {
         var items = await _vehiclesService.GetAllAsync();
         return Ok(items);
@@ -22,7 +22,7 @@ public class VehiclesController(IVehiclesService vehiclesService) : ControllerBa
 
     // GET api/Vehicles/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Vehicle>> Get(int id)
+    public async Task<ActionResult<VehicleToReadDto>> Get(int id)
     {
         var item = await _vehiclesService.GetByIdAsync(id);
         if (item == null)

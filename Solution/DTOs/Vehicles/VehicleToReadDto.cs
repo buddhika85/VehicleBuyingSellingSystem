@@ -3,6 +3,7 @@
 public class VehicleToReadDto
 {
     // FK    
+    public int Id { get; set; }
     public int ManufacturerId { get; set; }
     public string Manufacturer { get; set; } = null!;
     public string ManufacturerOrignated { get; set; } = null!;
