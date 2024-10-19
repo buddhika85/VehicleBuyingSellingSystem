@@ -22,7 +22,7 @@ select * from Manufacturers;
 select * from Vehicles;
 
 
-INSERT INTO [dbo].[Vehicles]           ([ManufacturerId]           ,[MakeYear]           ,[Model]           ,[Type]           ,[VehicleCondition]           ,[Price]           ,[StateLocated]           ,[Views]           ,[Description])
-     VALUES           (1           ,2024           ,'Yaris'           ,1           ,3           ,24000           ,1           ,0           ,'Yaris 2024')
+--INSERT INTO [dbo].[Vehicles]           ([ManufacturerId]           ,[MakeYear]           ,[Model]           ,[Type]           ,[VehicleCondition]           ,[Price]           ,[StateLocated]           ,[Views]           ,[Description])
+--     VALUES           (1           ,2024           ,'Yaris'           ,1           ,3           ,24000           ,1           ,0           ,'Yaris 2024')
 
 
